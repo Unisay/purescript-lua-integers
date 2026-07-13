@@ -9,6 +9,17 @@ fork entries are assembled from fragments in `changelog.d/` with
 
 <!-- scriv-insert-here -->
 
+<a id='changelog-v6.1.3'></a>
+## v6.1.3 - 2026-07-13
+
+### Changed
+
+- `toStringAs` accumulates digits by appending and reverses the joined
+  string once, instead of shifting the whole digit table on every
+  iteration with `table.insert(t, 1, …)`. Same output; about 1.5× faster
+  on 31-digit binary rendering (Int digit counts are bounded, so this is a
+  constant-factor win).
+
 ## v6.1.2 - 2026-06-15
 
 ### Fixed
