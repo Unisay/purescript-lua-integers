@@ -61,7 +61,7 @@ return {
   end),
   toStringAs = (function(radix)
     return function(i)
-      local floor, insert = math.floor, table.insert
+      local floor = math.floor
       local n = floor(i)
       if radix == 10 then return tostring(n) end
       -- JS Number.prototype.toString(radix) uses lowercase digits.
@@ -72,12 +72,15 @@ return {
         sign = "-"
         n = -n
       end
+      -- Digits come out least-significant first; append and reverse the
+      -- joined string (each digit is a single ASCII byte, so reverse is
+      -- safe) instead of shifting the table on every insert.
       repeat
         local d = (n % radix) + 1
         n = floor(n / radix)
-        insert(t, 1, digits:sub(d, d))
+        t[#t + 1] = digits:sub(d, d)
       until n == 0
-      return sign .. table.concat(t, "")
+      return sign .. table.concat(t, ""):reverse()
     end
   end),
   quot = (function(x)
